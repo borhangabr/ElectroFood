@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const { env } = require('./config/env');
 const app = require('./app');
 
+// Set global Mongoose timeout defaults to prevent default 10s buffer timeout
+mongoose.set('serverSelectionTimeoutMS', 120_000);
+mongoose.set('socketTimeoutMS', 120_000);
+
 // Cache the connection promise across invocations
 let connectionPromise = null;
 
@@ -29,6 +33,7 @@ function ensureDbConnection() {
       minPoolSize: 0,
       maxIdleTimeMS: 60_000,
       waitQueueTimeoutMS: 120_000,
+      family: 4, // Force IPv4
       retryWrites: true,
       retryReads: true,
       autoIndex: env.NODE_ENV !== 'production',
