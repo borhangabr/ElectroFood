@@ -2,30 +2,10 @@
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "client/dist",
   "installCommand": "npm install --workspaces",
-  "env": {
-    "STRIPE_CURRENCY": "usd",
-    "DELIVERY_FEE_CENTS": "300",
-    "NODE_ENV": "production"
-  },
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
     }
   ]
 }
