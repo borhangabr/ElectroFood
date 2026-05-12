@@ -8,6 +8,7 @@ const app = require('./app');
 // Set global Mongoose timeout defaults to prevent default 10s buffer timeout
 mongoose.set('serverSelectionTimeoutMS', 120_000);
 mongoose.set('socketTimeoutMS', 120_000);
+mongoose.set('bufferTimeoutMS', 120_000); // Increase operation buffer timeout from default 10s
 
 // Cache the connection promise across invocations
 let connectionPromise = null;
@@ -34,6 +35,8 @@ function ensureDbConnection() {
       maxIdleTimeMS: 60_000,
       waitQueueTimeoutMS: 120_000,
       family: 4, // Force IPv4
+      bufferCommands: true, // Keep buffering enabled but with longer timeout
+      maxCommitTime: 120_000, // Max time for a commit operation
       retryWrites: true,
       retryReads: true,
       autoIndex: env.NODE_ENV !== 'production',
@@ -59,7 +62,10 @@ ensureDbConnection().catch(err => {
 // Middleware to ensure DB is connected before handling requests
 app.use((req, res, next) => {
   ensureDbConnection()
-    .then(() => next())
+    .then(() => {
+      console.log('[Vercel] DB ready for request');
+      next();
+    })
     .catch(err => {
       console.error('[Vercel] Connection check failed:', err.message);
       // Continue anyway; error responses will be handled by app middleware
