@@ -1,3 +1,8 @@
+### Admin Credentials
+- Email: `admin@food.test`
+- Password: `Admin123!`
+
+
 # ElectroFood 🍕
 
 A full-stack MERN food ordering web application with bilingual support (English & Arabic), Stripe payment integration, real-time order tracking, and an admin dashboard.
@@ -70,9 +75,7 @@ A full-stack MERN food ordering web application with bilingual support (English 
 
 The app will be available at `http://localhost:5173`
 
-### Admin Credentials
-- Email: `admin@food.test`
-- Password: `Admin123!`
+
 
 ## Project Structure
 
@@ -131,33 +134,6 @@ CLOUDINARY_API_KEY=your_key
 CLOUDINARY_API_SECRET=your_secret
 ```
 
-### Client (.env)
-```
-VITE_API_URL=/api
-```
-
-## Development Notes
-
-- **Type-organized backend** — Follows the pattern from [BookTask](https://github.com/borhanhassan1/BookTask), deviating from typical feature-folder structure for backend clarity
-- **Price snapshots** — All order items store server-computed prices at creation time; client prices never trusted
-- **Stripe webhook** — Raw body parsing must mount BEFORE express.json() to preserve Buffer signature
-- **Guest checkout** — Optional auth flow; guests identified by 64-char token included in order
-- **RTK Query polling** — Order tracking uses polling with dynamic interval (7s while pending, 0 when delivered)
-
-## Testing
-
-```bash
-cd server
-npm test
-```
-
-## Deployment
-
-Ready for Vercel Serverless deployment. See [Deployment Guide](./DEPLOYMENT.md) (coming soon).
-
-## License
-
-MIT
 
 ## Author
 
