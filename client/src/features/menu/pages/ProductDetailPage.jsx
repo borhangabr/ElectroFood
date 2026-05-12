@@ -43,6 +43,7 @@ export default function ProductDetailPage() {
     // Dispatch addItem `qty` times for clarity. (Cheaper than building a separate
     // bulk-add action for a prototype; max(qty) is 99 from the input cap below.)
     for (let i = 0; i < qty; i += 1) dispatch(addItem(product));
+    setQty(1); // Reset the stepper after the click so it doesn't carry over.
   }
 
   return (
