@@ -9,13 +9,21 @@ mongoose.set('strictQuery', true);
 async function connectDb() {
   try {
     await mongoose.connect(env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 10_000,
+      serverSelectionTimeoutMS: 30_000,
+      socketTimeoutMS: 45_000,
+      maxPoolSize: 10,
+      minPoolSize: 2,
       autoIndex: env.NODE_ENV !== 'production', // build indexes in dev/test only
     });
     logger.info({ db: mongoose.connection.name }, 'mongo connected');
   } catch (err) {
     logger.fatal({ err: err.message }, 'mongo connect failed');
-    process.exit(1);
+    if (env.NODE_ENV === 'production') {
+      // In production (Vercel), don't exit — let the app serve errors gracefully
+      logger.error({ err: err.message }, 'mongo connection failed but continuing');
+    } else {
+      process.exit(1);
+    }
   }
 
   mongoose.connection.on('disconnected', () => logger.warn('mongo disconnected'));
