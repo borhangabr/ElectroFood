@@ -1,73 +1,42 @@
 // Vercel serverless function entry point
-// The Express app is already set up as middleware in app.js
-
 const mongoose = require('mongoose');
 const { env } = require('./config/env');
 const app = require('./app');
 
-// Set global Mongoose timeout defaults
-mongoose.set('serverSelectionTimeoutMS', 120_000);
-mongoose.set('socketTimeoutMS', 120_000);
+// Set global timeouts to handle slow MongoDB connections
+mongoose.set('serverSelectionTimeoutMS', 60_000);
+mongoose.set('socketTimeoutMS', 90_000);
 
-// Cache the connection promise across invocations
-let connectionPromise = null;
+// Simple connection cache
+let db = null;
 
-function ensureDbConnection() {
-  // If already connected, return immediately
-  if (mongoose.connection.readyState === 1) {
-    return Promise.resolve();
-  }
+async function connectDb() {
+  if (db) return db;
+  if (mongoose.connection.readyState === 1) return mongoose.connection;
 
-  // If connection attempt is in progress, return that promise
-  if (connectionPromise) {
-    return connectionPromise;
-  }
-
-  // Initiate new connection attempt
-  connectionPromise = mongoose
-    .connect(env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 120_000,
-      socketTimeoutMS: 120_000,
-      maxPoolSize: 2,
-      minPoolSize: 0,
-      maxIdleTimeMS: 60_000,
-      waitQueueTimeoutMS: 120_000,
-      family: 4, // Force IPv4
-      retryWrites: true,
-      retryReads: true,
+  try {
+    await mongoose.connect(env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 60_000,
+      socketTimeoutMS: 90_000,
+      maxPoolSize: 5,
+      minPoolSize: 1,
       autoIndex: env.NODE_ENV !== 'production',
-    })
-    .then(() => {
-      console.log('[Vercel] MongoDB connected');
-      return true;
-    })
-    .catch(err => {
-      console.error('[Vercel] MongoDB connection failed:', err.message);
-      connectionPromise = null; // Reset on failure to retry next time
-      throw err;
     });
-
-  return connectionPromise;
+    db = mongoose.connection;
+    console.log('[api.js] MongoDB connected');
+  } catch (err) {
+    console.error('[api.js] MongoDB connection failed:', err.message);
+    throw err;
+  }
 }
 
-// Attempt initial connection async (non-blocking)
-setImmediate(() => {
-  ensureDbConnection().catch(err => {
-    console.error('[Vercel] Initial connection failed, will retry on first request');
-  });
-});
+// Try to connect on cold start (non-blocking)
+connectDb().catch(err => console.error('[api.js] Cold start connection failed'));
 
-// Middleware to ensure DB is connected before handling requests
+// Middleware: ensure connection before processing
 app.use((req, res, next) => {
-  ensureDbConnection()
-    .then(() => {
-      next();
-    })
-    .catch(err => {
-      console.error('[Vercel] Connection check failed:', err.message);
-      next();
-    });
+  if (mongoose.connection.readyState === 1) return next();
+  connectDb().then(() => next()).catch(() => next());
 });
 
-// Export the Express app directly for Vercel
 module.exports = app;
