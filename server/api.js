@@ -50,21 +50,21 @@ function ensureDbConnection() {
   return connectionPromise;
 }
 
-// Attempt initial connection (non-blocking)
-ensureDbConnection().catch(err => {
-  console.error('[Vercel] Initial connection failed, will retry on first request');
+// Attempt initial connection async (non-blocking)
+setImmediate(() => {
+  ensureDbConnection().catch(err => {
+    console.error('[Vercel] Initial connection failed, will retry on first request');
+  });
 });
 
 // Middleware to ensure DB is connected before handling requests
 app.use((req, res, next) => {
   ensureDbConnection()
     .then(() => {
-      console.log('[Vercel] DB ready for request');
       next();
     })
     .catch(err => {
       console.error('[Vercel] Connection check failed:', err.message);
-      // Continue anyway; error responses will be handled by app middleware
       next();
     });
 });
