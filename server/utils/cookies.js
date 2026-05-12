@@ -5,8 +5,9 @@
 //
 // In dev the frontend runs through Vite's /api proxy, so the browser sees the
 // API as same-origin (:5173 → :5173). That means sameSite:'lax' works without
-// secure:true. In prod we set secure:true and sameSite:'strict' assuming
-// the API and the app share a registrable domain (e.g. api.example.com + example.com).
+// secure:true. In prod the frontend (electro-food-one.vercel.app) and backend
+// (electro-food-api.vercel.app) are on different Vercel subdomains — they are
+// cross-site, so we need sameSite:'none' (with secure:true) for cookies to flow.
 
 const { env } = require('../config/env');
 
@@ -15,7 +16,7 @@ const IS_PROD = env.NODE_ENV === 'production';
 const baseCookieOptions = {
   httpOnly: true,
   secure: IS_PROD,
-  sameSite: IS_PROD ? 'strict' : 'lax',
+  sameSite: IS_PROD ? 'none' : 'lax',
   path: '/',
 };
 
