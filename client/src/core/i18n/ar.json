@@ -1,0 +1,84 @@
+{
+  "brand": "إلكتروفود",
+  "nav": {
+    "menu": "القائمة",
+    "cart": "السلة",
+    "orders": "الطلبات",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "admin": "لوحة التحكم",
+    "logout": "تسجيل الخروج"
+  },
+  "lang": {
+    "toggleTo": "English",
+    "current": "AR"
+  },
+  "home": {
+    "tagline": "اشتهيه. اضغطه. كله.",
+    "subtitle": "سريع، طازج، ويصل لبابك .",
+    "cta": "تصفّح القائمة"
+  },
+  "common": {
+    "loading": "جارٍ التحميل…",
+    "error": "حدث خطأ ما",
+    "retry": "إعادة المحاولة"
+  },
+  "menu": {
+    "subtitle": "اضغط على أي صنف لإضافته إلى السلة.",
+    "all": "الكل",
+    "searchPlaceholder": "ابحث في القائمة…",
+    "empty": "لا توجد نتائج مطابقة.",
+    "tryAgain": "جرّب كلمة أو فئة مختلفة."
+  },
+  "product": {
+    "add": "أضف"
+  },
+  "cart": {
+    "empty": "سلتك فارغة",
+    "emptyHint": "تصفّح القائمة واختر ما يعجبك.",
+    "summary": "ملخص الطلب",
+    "subtotal": "المجموع الفرعي",
+    "delivery": "التوصيل",
+    "total": "الإجمالي",
+    "clear": "إفراغ السلة",
+    "checkout": "إتمام الشراء",
+    "finalNote": "تُحدَّد الأسعار والضرائب النهائية عند الدفع."
+  },
+  "checkout": {
+    "title": "إتمام الشراء",
+    "contactTitle": "معلومات التواصل",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "deliveryTo": "العنوان",
+    "line1": "العنوان التفصيلي",
+    "city": "المدينة",
+    "phone": "الهاتف",
+    "notes": "ملاحظات (اختياري)",
+    "payment": "الدفع",
+    "paymentStripe": "الدفع عبر الإنترنت (Stripe)",
+    "paymentStripeDesc": "بطاقة ائتمان / مدى عبر صفحة Stripe الآمنة.",
+    "paymentCod": "الدفع عند الاستلام",
+    "paymentCodDesc": "ادفع نقدًا عند وصول الطلب.",
+    "placeOrder": "إرسال الطلب",
+    "payNow": "ادفع الآن",
+    "guestHint": "تتم عملية الشراء كضيف.",
+    "haveAccount": "هل لديك حساب؟ سجل الدخول."
+  },
+  "orders": {
+    "order": "طلب",
+    "items": "الأصناف",
+    "itemsShort": "أصناف",
+    "none": "لم تقم بأي طلبات بعد.",
+    "backToList": "كل الطلبات",
+    "cancelled": "تم إلغاء هذا الطلب.",
+    "paymentLabel": "الدفع",
+    "status": {
+      "pending": "قيد الانتظار",
+      "confirmed": "تم التأكيد",
+      "preparing": "قيد التحضير",
+      "out_for_delivery": "في الطريق",
+      "delivered": "تم التسليم",
+      "cancelled": "ملغي"
+    }
+  }
+}

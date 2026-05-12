@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Language-aware default font. Tailwind's `font-en`/`font-ar` still work as
+   overrides, but this gives every text node the right font without us having
+   to remember to set it everywhere. */
+:lang(en) {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+:lang(ar) {
+  font-family: 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-bg text-ink;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings get a hair tighter tracking and Inter's heavier weights look better. */
+  h1, h2, h3, h4 {
+    @apply font-semibold tracking-tight;
+  }
+
+  /* Native form controls inherit a tiny bit of design language. */
+  button {
+    @apply outline-none;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply ring-2 ring-primary/40 ring-offset-2 ring-offset-bg rounded-md;
+  }
+}
+
+@layer components {
+  /* Reusable container — keeps content readable on wide screens. */
+  .container-app {
+    @apply mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8;
+  }
+}

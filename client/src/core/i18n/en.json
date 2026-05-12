@@ -1,0 +1,84 @@
+{
+  "brand": "ElectroFood",
+  "nav": {
+    "menu": "Menu",
+    "cart": "Cart",
+    "orders": "Orders",
+    "login": "Sign in",
+    "register": "Sign up",
+    "admin": "Admin",
+    "logout": "Sign out"
+  },
+  "lang": {
+    "toggleTo": "العربية",
+    "current": "EN"
+  },
+  "home": {
+    "tagline": "Crave it. Tap it. Eat it.",
+    "subtitle": "Fast, fresh, and right to your door",
+    "cta": "Browse the menu"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Retry"
+  },
+  "menu": {
+    "subtitle": "Tap an item to add it to your cart.",
+    "all": "All",
+    "searchPlaceholder": "Search the menu…",
+    "empty": "Nothing matched your search.",
+    "tryAgain": "Try a different keyword or category."
+  },
+  "product": {
+    "add": "Add"
+  },
+  "cart": {
+    "empty": "Your cart is empty",
+    "emptyHint": "Browse the menu and pick something delicious.",
+    "summary": "Order summary",
+    "subtotal": "Subtotal",
+    "delivery": "Delivery",
+    "total": "Total",
+    "clear": "Clear cart",
+    "checkout": "Checkout",
+    "finalNote": "Final prices and tax confirmed at checkout."
+  },
+  "checkout": {
+    "title": "Checkout",
+    "contactTitle": "Contact info",
+    "fullName": "Full name",
+    "email": "Email",
+    "deliveryTo": "Deliver to",
+    "line1": "Street address",
+    "city": "City",
+    "phone": "Phone",
+    "notes": "Notes (optional)",
+    "payment": "Payment",
+    "paymentStripe": "Pay online (Stripe)",
+    "paymentStripeDesc": "Credit / debit card via Stripe-hosted checkout.",
+    "paymentCod": "Cash on delivery",
+    "paymentCodDesc": "Pay in cash when your order arrives.",
+    "placeOrder": "Place order",
+    "payNow": "Pay now",
+    "guestHint": "Checking out as a guest.",
+    "haveAccount": "Have an account? Sign in."
+  },
+  "orders": {
+    "order": "Order",
+    "items": "Items",
+    "itemsShort": "items",
+    "none": "You haven't placed any orders yet.",
+    "backToList": "All orders",
+    "cancelled": "This order was cancelled.",
+    "paymentLabel": "Payment",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "out_for_delivery": "Out for delivery",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    }
+  }
+}
