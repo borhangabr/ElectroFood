@@ -17,6 +17,7 @@ const requestId = require("./middlewares/requestId.middleware");
 const errorMiddleware = require("./middlewares/error.middleware");
 const asyncHandler = require("./middlewares/asyncHandler");
 const { globalLimiter } = require("./middlewares/rateLimit.middleware");
+const dbReady = require("./middlewares/dbReady.middleware");
 const { NotFound } = require("./utils/errors");
 const routes = require("./routes");
 const paymentController = require("./controllers/payment.controller");
@@ -101,6 +102,15 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(hpp());
 app.use(mongoSanitize);
 app.use(globalLimiter);
+
+// Wait for Mongo to be ready before any /api route runs (except /api/health,
+// which intentionally reports DB status). On warm instances this is a
+// synchronous readyState check; on cold instances it polls until the
+// connection completes (max 30s) instead of erroring out at 10s.
+app.use("/api", (req, res, next) => {
+  if (req.path === "/health") return next();
+  return dbReady(req, res, next);
+});
 
 // --- Mounted routers ---
 app.use("/api", routes);
