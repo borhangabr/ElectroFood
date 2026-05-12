@@ -26,6 +26,8 @@ const Input = forwardRef(function Input(
         className={cn(
           'block w-full rounded-md border bg-surface px-3.5 py-2.5 text-sm',
           'placeholder:text-ink-muted/70',
+          // Smooth the border + ring transition so focus feels intentional, not a flash.
+          'transition-[border-color,box-shadow] duration-150 ease-out',
           'focus:outline-none',
           error
             ? 'border-danger focus:border-danger focus:ring-2 focus:ring-danger/30'

@@ -42,6 +42,58 @@ export default {
       maxWidth: {
         container: '1200px',
       },
+      // ─────────────────────────────────────────────────────────────────────
+      // Motion tokens. Keep these subtle — this is a food-ordering app, not a
+      // landing page demo. Everything here respects prefers-reduced-motion
+      // (see index.css), so users who disable animations get instant states.
+      // ─────────────────────────────────────────────────────────────────────
+      keyframes: {
+        'fade-up': {
+          '0%':   { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in': {
+          '0%':   { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'slide-in-end': {
+          '0%':   { opacity: '0', transform: 'translateX(16px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'pop-in': {
+          '0%':   { opacity: '0', transform: 'scale(0.85)' },
+          '60%':  { opacity: '1', transform: 'scale(1.05)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        'bounce-soft': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%':      { transform: 'translateY(-3px)' },
+        },
+        'pulse-ring': {
+          '0%':   { boxShadow: '0 0 0 0 rgba(230, 57, 70, 0.4)' },
+          '70%':  { boxShadow: '0 0 0 10px rgba(230, 57, 70, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(230, 57, 70, 0)' },
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0)' },
+          '25%':      { transform: 'rotate(-8deg)' },
+          '75%':      { transform: 'rotate(8deg)' },
+        },
+        shimmer: {
+          '0%':   { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+      },
+      animation: {
+        'fade-up':       'fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'fade-in':       'fade-in 0.3s ease-out both',
+        'slide-in-end':  'slide-in-end 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'pop-in':        'pop-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'bounce-soft':   'bounce-soft 0.5s ease-out',
+        'pulse-ring':    'pulse-ring 1.8s ease-out infinite',
+        wiggle:          'wiggle 0.5s ease-in-out',
+        shimmer:         'shimmer 1.4s linear infinite',
+      },
     },
   },
   plugins: [],

@@ -8,6 +8,10 @@ const STATUSES = ['pending', 'confirmed', 'preparing', 'out_for_delivery', 'deli
  * from `statusHistory` if available; the current stage is highlighted.
  *
  * Indexes the history by status (latest entry wins if duplicated).
+ *
+ * Visual flourishes:
+ *  - Each cell fades up with a stagger delay so the timeline draws in.
+ *  - The current step pulses with a soft ring to draw the eye.
  */
 export default function OrderTimeline({ order }) {
   const { t, i18n } = useTranslation();
@@ -22,7 +26,7 @@ export default function OrderTimeline({ order }) {
 
   if (isCancelled) {
     return (
-      <p className="rounded-md bg-danger/10 px-4 py-3 text-sm text-danger">
+      <p className="rounded-md bg-danger/10 px-4 py-3 text-sm text-danger animate-fade-in">
         {t('orders.cancelled')}
       </p>
     );
@@ -38,8 +42,10 @@ export default function OrderTimeline({ order }) {
           <li
             key={s}
             className={cn(
-              'rounded-md border p-3',
-              done && current && 'border-primary bg-primary/5 text-primary',
+              'rounded-md border p-3 animate-fade-up',
+              `stagger-${i + 1}`,
+              'transition-colors duration-300',
+              done && current && 'border-primary bg-primary/5 text-primary animate-pulse-ring',
               done && !current && 'border-success/40 bg-success/5 text-success',
               !done && 'border-ink/10 text-ink-muted',
             )}

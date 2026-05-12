@@ -1,6 +1,6 @@
 // All app routes. Each feature contributes its pages here.
 
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import HomePage from '../features/menu/pages/HomePage';
 import MenuPage from '../features/menu/pages/MenuPage';
@@ -30,45 +30,50 @@ function NotFound() {
 }
 
 export default function AppRoutes() {
+  // We key the wrapper on pathname so each route transition restarts the
+  // fade-in animation. Cheap, no exit animation, no extra dependency.
+  const location = useLocation();
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/menu" element={<MenuPage />} />
-      <Route path="/menu/:id" element={<ProductDetailPage />} />
-      <Route path="/cart" element={<CartPage />} />
-      {/* Anyone can check out — guest checkout writes the order with a guestToken. */}
-      <Route path="/checkout" element={<CheckoutPage />} />
-      {/* My-orders list still requires login (guests don't have an account). */}
-      <Route
-        path="/orders"
-        element={
-          <ProtectedRoute>
-            <MyOrdersPage />
-          </ProtectedRoute>
-        }
-      />
-      {/* Tracking page accepts a ?token=... query param for guest reads, or
-          the auth cookie for owner reads. ProtectedRoute would block guests. */}
-      <Route path="/orders/:id" element={<OrderTrackingPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+    <div key={location.pathname} className="animate-fade-in">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/menu/:id" element={<ProductDetailPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        {/* Anyone can check out — guest checkout writes the order with a guestToken. */}
+        <Route path="/checkout" element={<CheckoutPage />} />
+        {/* My-orders list still requires login (guests don't have an account). */}
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <MyOrdersPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Tracking page accepts a ?token=... query param for guest reads, or
+            the auth cookie for owner reads. ProtectedRoute would block guests. */}
+        <Route path="/orders/:id" element={<OrderTrackingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-      <Route
-        path="/admin"
-        element={
-          <AdminRoute>
-            <AdminLayout />
-          </AdminRoute>
-        }
-      >
-        <Route index element={<AdminDashboard />} />
-        <Route path="orders" element={<AdminOrders />} />
-        <Route path="products" element={<AdminProducts />} />
-        <Route path="categories" element={<AdminCategories />} />
-        <Route path="users" element={<AdminUsers />} />
-      </Route>
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="categories" element={<AdminCategories />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }

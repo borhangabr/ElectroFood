@@ -19,11 +19,13 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <section className="container-app py-16 text-center">
-        <h1 className="text-2xl font-bold">{t('cart.empty', { defaultValue: 'Your cart is empty' })}</h1>
-        <p className="mt-2 text-ink-muted">
+        <h1 className="animate-fade-up text-2xl font-bold">
+          {t('cart.empty', { defaultValue: 'Your cart is empty' })}
+        </h1>
+        <p className="mt-2 animate-fade-up stagger-2 text-ink-muted">
           {t('cart.emptyHint', { defaultValue: 'Browse the menu and pick something delicious.' })}
         </p>
-        <Link to="/menu" className="mt-6 inline-block">
+        <Link to="/menu" className="mt-6 inline-block animate-fade-up stagger-3">
           <Button variant="primary">{t('home.cta')}</Button>
         </Link>
       </section>
@@ -50,9 +52,9 @@ export default function CartPage() {
           </button>
         </div>
 
-        <aside className="rounded-card bg-surface p-6 shadow-soft">
+        <aside className="rounded-card bg-surface p-6 shadow-soft animate-fade-up stagger-2">
           <h2 className="text-lg font-semibold">{t('cart.summary', { defaultValue: 'Order summary' })}</h2>
-          <dl className="mt-4 space-y-2 text-sm">
+          <dl className="mt-4 space-y-2 text-sm tabular-nums">
             <div className="flex justify-between">
               <dt className="text-ink-muted">{t('cart.subtotal', { defaultValue: 'Subtotal' })}</dt>
               <dd>{formatCurrency(subtotal, i18n.resolvedLanguage)}</dd>

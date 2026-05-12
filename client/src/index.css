@@ -36,6 +36,17 @@
   select:focus-visible {
     @apply ring-2 ring-primary/40 ring-offset-2 ring-offset-bg rounded-md;
   }
+
+  /* Honor the system / OS reduced-motion preference. Disables every keyframe
+     animation and shrinks transitions to near-zero — accessibility before flair. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer components {
@@ -43,4 +54,25 @@
   .container-app {
     @apply mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8;
   }
+
+  /* Skeleton shimmer for placeholders. Use as `<div class="skeleton h-4 w-full" />`. */
+  .skeleton {
+    @apply rounded-md bg-ink/5 bg-[linear-gradient(90deg,transparent_0%,rgba(29,29,31,0.06)_50%,transparent_100%)] bg-[length:200%_100%] animate-shimmer;
+  }
+}
+
+@layer utilities {
+  /* Stagger helpers. Apply alongside an animation class so list children
+     start a beat after one another:
+       <li class="animate-fade-up stagger-1">...</li>
+       <li class="animate-fade-up stagger-2">...</li>
+     Keeps stagger logic out of the React render. */
+  .stagger-1 { animation-delay: 40ms; }
+  .stagger-2 { animation-delay: 80ms; }
+  .stagger-3 { animation-delay: 120ms; }
+  .stagger-4 { animation-delay: 160ms; }
+  .stagger-5 { animation-delay: 200ms; }
+  .stagger-6 { animation-delay: 240ms; }
+  .stagger-7 { animation-delay: 280ms; }
+  .stagger-8 { animation-delay: 320ms; }
 }
