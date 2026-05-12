@@ -1,9 +1,13 @@
 {
   "version": 2,
+  "buildCommand": "npm install",
   "builds": [
     {
       "src": "api.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": "**"
+      }
     }
   ],
   "routes": [
@@ -11,10 +15,5 @@
       "src": "/(.*)",
       "dest": "api.js"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "STRIPE_CURRENCY": "usd",
-    "DELIVERY_FEE_CENTS": "300"
-  }
+  ]
 }
