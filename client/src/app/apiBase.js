@@ -1,55 +1,32 @@
 // Shared RTK Query baseQuery for the whole app.
 //
-// Two responsibilities:
-//   1. Send credentials (cookies) with every request, since auth is httpOnly-cookie based.
-//   2. On a 401, transparently try POST /auth/refresh once, then replay the original request.
-//      If the refresh fails, the user is logged out (slice clears + redirect happens in UI).
+// Simplified: we use a single long-lived access token cookie (7d TTL), so
+// there's no refresh dance. On a 401, we just clear the user — the UI will
+// redirect to login.
 //
 // Every feature's api.js does `createApi({ baseQuery: baseQueryWithReauth, ... })`.
 
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { setUser, clearUser } from '../features/auth/slice';
+import { clearUser } from '../features/auth/slice';
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_API_URL || '/api',
   credentials: 'include',
 });
 
-// Coalesce concurrent refresh attempts — if two requests both 401 at the same
-// moment, the second one waits on the first refresh instead of firing a duplicate.
-let refreshPromise = null;
-
 export async function baseQueryWithReauth(args, api, extraOptions) {
-  let result = await rawBaseQuery(args, api, extraOptions);
+  const result = await rawBaseQuery(args, api, extraOptions);
 
-  // Don't try to refresh the refresh call itself.
-  const isAuthCall =
+  const isMeCall =
     typeof args === 'string'
-      ? args.startsWith('/auth/')
-      : args.url?.startsWith('/auth/');
+      ? args === '/auth/me'
+      : args.url === '/auth/me';
 
-  if (result.error?.status === 401 && !isAuthCall) {
-    if (!refreshPromise) {
-      refreshPromise = rawBaseQuery(
-        { url: '/auth/refresh', method: 'POST' },
-        api,
-        extraOptions,
-      ).finally(() => {
-        // Always clear so the next 401 can trigger a fresh attempt.
-        setTimeout(() => {
-          refreshPromise = null;
-        }, 0);
-      });
-    }
-    const refresh = await refreshPromise;
-
-    if (refresh.data?.success) {
-      // Sync the user slice with whoever logged in, then replay the original request.
-      api.dispatch(setUser(refresh.data.data.user));
-      result = await rawBaseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(clearUser());
-    }
+  // On 401, clear the user state so UI redirects to login.
+  // Don't clear on the /auth/me call itself — that's checked at app start
+  // and a 401 there just means "not logged in yet."
+  if (result.error?.status === 401 && !isMeCall) {
+    api.dispatch(clearUser());
   }
 
   return result;
