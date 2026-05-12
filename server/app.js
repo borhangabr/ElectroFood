@@ -56,9 +56,18 @@ app.use(
     crossOriginResourcePolicy: { policy: "cross-origin" }, // for Cloudinary images
   }),
 );
+// CORS: allow the configured CLIENT_URL plus any Vercel preview deployment
+// for this project (electro-food-*.vercel.app). Vercel generates a unique
+// hostname for every deployment, so a static allowlist of one URL won't work.
+const VERCEL_PREVIEW_RE = /^https:\/\/electro-food-[a-z0-9-]+\.vercel\.app$/;
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // non-browser clients (curl, server-to-server)
+      if (origin === env.CLIENT_URL) return callback(null, true);
+      if (VERCEL_PREVIEW_RE.test(origin)) return callback(null, true);
+      return callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
     credentials: true,
   }),
 );
