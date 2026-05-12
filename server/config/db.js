@@ -9,10 +9,12 @@ mongoose.set('strictQuery', true);
 async function connectDb() {
   try {
     await mongoose.connect(env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 30_000,
-      socketTimeoutMS: 45_000,
-      maxPoolSize: 10,
-      minPoolSize: 2,
+      serverSelectionTimeoutMS: 60_000,
+      socketTimeoutMS: 90_000,
+      maxPoolSize: 5,
+      minPoolSize: 1,
+      maxIdleTimeMS: 30_000,
+      waitQueueTimeoutMS: 60_000,
       autoIndex: env.NODE_ENV !== 'production', // build indexes in dev/test only
     });
     logger.info({ db: mongoose.connection.name }, 'mongo connected');
