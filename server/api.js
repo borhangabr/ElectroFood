@@ -5,10 +5,9 @@ const mongoose = require('mongoose');
 const { env } = require('./config/env');
 const app = require('./app');
 
-// Set global Mongoose timeout defaults to prevent default 10s buffer timeout
+// Set global Mongoose timeout defaults
 mongoose.set('serverSelectionTimeoutMS', 120_000);
 mongoose.set('socketTimeoutMS', 120_000);
-mongoose.set('bufferTimeoutMS', 120_000); // Increase operation buffer timeout from default 10s
 
 // Cache the connection promise across invocations
 let connectionPromise = null;
@@ -29,14 +28,11 @@ function ensureDbConnection() {
     .connect(env.MONGODB_URI, {
       serverSelectionTimeoutMS: 120_000,
       socketTimeoutMS: 120_000,
-      connectionTimeoutMS: 120_000,
       maxPoolSize: 2,
       minPoolSize: 0,
       maxIdleTimeMS: 60_000,
       waitQueueTimeoutMS: 120_000,
       family: 4, // Force IPv4
-      bufferCommands: true, // Keep buffering enabled but with longer timeout
-      maxCommitTime: 120_000, // Max time for a commit operation
       retryWrites: true,
       retryReads: true,
       autoIndex: env.NODE_ENV !== 'production',
